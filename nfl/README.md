@@ -38,6 +38,29 @@ The blend was the best: 66.8% on 2025, and it is the model used for weekly picks
 ### 7. Simulate games
 `nfl_game_sim.py` plays a game one snap at a time, thousands of times. Each snap reuses a real play from nflverse, adjusted for how good that offense and defense are. The most typical simulated game is shown as an animated replay, and the full set of games gives projected box scores.
 
+## 2026 season results
+
+I posted a pick for every game each week before kickoff.
+
+| Week | Model | Record | Accuracy |
+|---|---|---:|---:|
+| 2 | XGBoost | 8-8 | 50.0% |
+| 3 | XGBoost | 10-6 | 62.5% |
+| 4 | XGBoost | 11-5 | 68.8% |
+| 5 | XGBoost | 9-5-1 | 64.3% |
+| 6 | XGBoost + QB form | 8-5 | 61.5% |
+| 7 | XGBoost + QB form | 8-6 | 57.1% |
+| 8 | Blend | 11-3 | 78.6% |
+| 9 | Blend | 14-1 | 93.3% |
+| **Total** | | **79-39-1** | **66.9%** |
+
+How it got better:
+- **More data each week.** The model isn't retrained during the season, but most inputs are a team's averages from its games so far. In Week 2 that is one game per team; by Week 9 it is seven or eight, so the averages are much more reliable.
+- **Quarterback form (Week 6).** Added each starting QB's recent efficiency, so injuries and backup QBs change the pick.
+- **Blended model (Week 8).** Averaged XGBoost with logistic regression and Elo ratings. On past seasons the blend was more accurate and better calibrated than XGBoost alone. Since the switch it is 25-4 (86%).
+
+Weeks 8 and 9 are only 29 games, so the full-season 66.9% is the fairer number. It matches the 66.8% the blend scored on the 2025 season in testing.
+
 ## Files
 
 | File | What it does |
