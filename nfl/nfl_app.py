@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 import os
 import time
+import urllib.request
 
 import pandas as pd
 import streamlit as st
@@ -14,11 +15,9 @@ ROOT = Path(__file__).resolve().parent
 os.chdir(ROOT)
 CONFIG = json.loads((ROOT / "nfl_weekly_config.json").read_text())
 MODEL = ROOT / CONFIG["model_path"]
-SEASON, WEEK = CONFIG["season"], CONFIG["week"]
-QB_OVERRIDES = CONFIG["qb_overrides"]
-OUT_PLAYERS = CONFIG.get("out_players", {})
-RETURNING_PLAYERS = CONFIG.get("returning_players", {})
-FEATURED_GAME = CONFIG.get("featured_game")
+SEASON = CONFIG["season"]
+ESPN_SUMMARY = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={}"
+OUT_STATUSES = {"Out", "Doubtful", "Injured Reserve", "Suspension", "Physically Unable to Perform"}
 SIM_MODEL_WEIGHT = .25
 FEATURED_SIMS, STANDARD_SIMS = (20_000, 10_000), (20_000, 2_000)
 NAMES = dict(
@@ -40,19 +39,29 @@ st.markdown("""<style>
 .block-container {max-width: 1240px; padding-top: 2.5rem;}
 [data-testid="stMetricValue"] {font-size: 2.2rem;}
 </style>""", unsafe_allow_html=True)
-st.caption("LOCAL MODEL · 2026 REGULAR SEASON")
+st.caption(f"LOCAL MODEL · {SEASON} REGULAR SEASON")
 st.title("NFL Matchup Predictor")
-st.write(f"Week {WEEK} · Select a game to run your saved model.")
 
 
 @st.cache_data(ttl=300, show_spinner=False)
-def week_schedule(season, week):
+def season_schedule(season):
     games = nfl.prepare_schedule(nfl.load_schedule(refresh=True), season, season)
-    games = games.loc[games.week.eq(week)].copy()
     kickoff_text = games.gameday.dt.strftime("%Y-%m-%d") + " " + games.gametime.fillna("")
     games["kickoff"] = pd.to_datetime(kickoff_text, errors="coerce").dt.tz_localize("America/New_York")
     games.loc[games.gametime.isna(), "kickoff"] = pd.NaT
     return games, pd.Timestamp.now(tz="America/New_York").strftime("%b %d, %Y at %I:%M %p %Z")
+
+
+@st.cache_data(ttl=1800, show_spinner=False)
+def injury_report(espn_id, home, away):
+    with urllib.request.urlopen(ESPN_SUMMARY.format(espn_id), timeout=15) as response:
+        data = json.loads(response.read())
+    sides = {c["team"]["id"]: home if c["homeAway"] == "home" else away
+             for c in data["header"]["competitions"][0]["competitors"]}
+    rows = [dict(team=sides.get(team["team"]["id"]), player=item["athlete"]["displayName"],
+                 pos=item["athlete"].get("position", {}).get("abbreviation", ""), status=item.get("status", ""))
+            for team in data.get("injuries", []) for item in team.get("injuries", [])]
+    return pd.DataFrame(rows, columns=["team", "player", "pos", "status"])
 
 
 def game_label(row):
@@ -82,7 +91,8 @@ def save_selected_prediction(prediction, features, kickoff):
 
 
 if st.button("Refresh schedule and clear preview"):
-    week_schedule.clear()
+    season_schedule.clear()
+    injury_report.clear()
     st.session_state.pop("preview", None)
 
 if not MODEL.exists():
@@ -90,18 +100,28 @@ if not MODEL.exists():
     st.stop()
 
 try:
-    with st.spinner(f"Loading the Week {WEEK} schedule…"):
-        games, loaded_at = week_schedule(SEASON, WEEK)
+    with st.spinner("Loading the schedule…"):
+        season_games, loaded_at = season_schedule(SEASON)
 except Exception as exc:
     st.error(f"Could not refresh the schedule: {exc}")
     st.info("Check your internet connection, then use Refresh. No stale predictions have been substituted.")
     st.stop()
 
+if season_games.completed.all():
+    st.info(f"The {SEASON} regular season is over.")
+    st.stop()
+WEEK = int(season_games.loc[~season_games.completed, "week"].min())
+games = season_games.loc[season_games.week.eq(WEEK)]
+MANUAL = CONFIG if CONFIG.get("week") == WEEK else {}
+QB_OVERRIDES = MANUAL.get("qb_overrides", {})
+FEATURED_GAME = MANUAL.get("featured_game")
+st.write(f"Week {WEEK} · Select a game to run your saved model.")
+
 now = pd.Timestamp.now(tz="America/New_York")
 upcoming = games.loc[~games.completed & games.kickoff.gt(now)].sort_values(["kickoff", "game_id"])
 st.caption(f"Schedule refreshed: {loaded_at} · Times are Eastern")
 if upcoming.empty:
-    st.info(f"No upcoming Week {WEEK} games remain. This page does not generate retrospective picks.")
+    st.info(f"No Week {WEEK} games are left to kick off. This page does not generate retrospective picks.")
     st.stop()
 
 by_game = upcoming.set_index("game_id")
@@ -119,7 +139,19 @@ with versus:
 with home_col:
     show_team(game.home_team, "HOME")
 
-st.info(f"Uses your saved model and completed Weeks 1–{WEEK - 1} statistics. No retraining. The win pick accounts for starting-QB changes only; the simulation also removes players listed Out in nfl_weekly_config.json and adds back players listed as returning.")
+try:
+    injuries = injury_report(int(game.espn), game.home_team, game.away_team)
+except Exception:
+    injuries = None
+    st.warning("Could not load ESPN's injury report. The simulation will only use manual injury entries.")
+if injuries is not None:
+    sidelined = injuries.loc[injuries.status.isin(OUT_STATUSES)]
+    with st.expander(f"Injury report: {len(sidelined)} players out (ESPN)"):
+        st.caption("Players listed Out, Doubtful, on injured reserve or suspended are removed from the simulation. "
+                   "Questionable players stay in.")
+        st.dataframe(injuries.sort_values(["team", "status", "player"]), hide_index=True, width="stretch")
+
+st.info(f"Uses your saved model and completed Weeks 1–{WEEK - 1} statistics. No retraining. The win pick accounts for starting-QB changes only; the simulation also removes players ESPN lists as out.")
 if st.button("Predict selected game", type="primary"):
     st.session_state.pop("preview", None)
     try:
@@ -145,6 +177,13 @@ if preview and preview["game_id"] == game_id:
     st.divider()
     st.caption(f"Scheduled quarterbacks: {prediction.get('away_qb_name', 'Unknown')} ({game.away_team}) · "
                f"{prediction.get('home_qb_name', 'Unknown')} ({game.home_team}). Review before kickoff.")
+    if injuries is not None:
+        for side in ("away", "home"):
+            qb = prediction.get(f"{side}_qb_name")
+            listed = injuries.loc[injuries.player.eq(qb) & injuries.status.isin(OUT_STATUSES), "status"]
+            if len(listed):
+                st.warning(f"ESPN lists {qb} as {listed.iloc[0]}, but the schedule still has him starting. "
+                           "Set the real starter in qb_overrides in nfl_weekly_config.json.")
     st.subheader(f"Predicted winner: {winner}")
     st.metric("Winner probability", f"{winner_probability:.1%}")
     a, h = st.columns(2)
@@ -217,11 +256,19 @@ def run_simulation(game_id, game, n_games, n_calibration):
                                                qb_overrides=QB_OVERRIDES).iloc[0].to_dict()
     probability = float(prediction.get("xgb_home_probability", prediction["home_win_probability"]))
     started = time.perf_counter()
-    result = sim.simulate_game(load_league(SEASON), game.home_team, game.away_team, probability, n=n_games,
+    league = load_league(SEASON)
+    returning = MANUAL.get("returning_players", {})
+    starters = {prediction.get("home_qb_name"), prediction.get("away_qb_name")}
+    out = {team: list(MANUAL.get("out_players", {}).get(team, [])) for team in (game.home_team, game.away_team)}
+    if injuries is not None:
+        for row in injuries.loc[injuries.status.isin(OUT_STATUSES)].itertuples():
+            if (row.team in out and row.player not in out[row.team] and row.player not in starters
+                    and row.player not in returning.get(row.team, []) and league.has_player(row.player, row.team)):
+                out[row.team].append(row.player)
+    result = sim.simulate_game(league, game.home_team, game.away_team, probability, n=n_games,
                                model_weight=SIM_MODEL_WEIGHT, home_qb=prediction.get("home_qb_name"),
                                away_qb=prediction.get("away_qb_name"), calibration_sims=n_calibration,
-                               game_id=game_id, out_players=OUT_PLAYERS,
-                               returning_players=RETURNING_PLAYERS)
+                               game_id=game_id, out_players=out, returning_players=returning)
     typical = result.typical_sim()
     final = result.games.loc[result.games.sim.eq(typical)].iloc[0]
     samples, prop_players = result.player_samples()
@@ -229,7 +276,7 @@ def run_simulation(game_id, game, n_games, n_calibration):
             "home_win": result.home_win_rate, "matchup_only": result.raw_probability, "model": probability,
             "home_median": result.games.home_score.median(), "away_median": result.games.away_score.median(),
             "final": (int(final.away_score), int(final.home_score)), "projections": result.projections(),
-            "n": int(result.games.sim.nunique()), "seconds": time.perf_counter() - started,
+            "n": int(result.games.sim.nunique()), "seconds": time.perf_counter() - started, "out": out,
             "samples": samples, "prop_players": prop_players}
 
 
@@ -259,6 +306,8 @@ if simulation and simulation["game_id"] == game_id:
     away_final, home_final = simulation["final"]
     minutes, seconds = divmod(round(simulation["seconds"]), 60)
     st.success(f"Simulated {simulation['n']:,} separate games in {minutes} min {seconds} s.")
+    removed = [f"{name} ({team})" for team, names in simulation["out"].items() for name in names]
+    st.caption("Left out for injury: " + (", ".join(removed) if removed else "nobody"))
     st.caption(f"Replaying simulation {simulation['typical'] + 1:,} of {simulation['n']:,} — the most typical game "
                f"(final {away} {away_final}, {home} {home_final}). Use the speed buttons or slider to scrub.")
     components.html(simulation["html"], height=960, scrolling=True)

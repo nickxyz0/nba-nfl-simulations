@@ -629,6 +629,9 @@ class League:
                 result[pid] = float(share)
         return result
 
+    def has_player(self, name, team):
+        return self._match_player(name, team) is not None
+
     def _match_player(self, name, team):
         if not hasattr(self, "player_teams"):
             return None
