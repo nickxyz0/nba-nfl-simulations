@@ -48,18 +48,18 @@ I posted a pick for every game each week before kickoff.
 | 3 | XGBoost | 10-6 | 62.5% |
 | 4 | XGBoost | 11-5 | 68.8% |
 | 5 | XGBoost | 9-5-1 | 64.3% |
-| 6 | XGBoost + QB form | 8-5 | 61.5% |
+| 6 | XGBoost + QB form | 7-5 | 58.3% |
 | 7 | XGBoost + QB form | 8-6 | 57.1% |
 | 8 | Blend | 11-3 | 78.6% |
 | 9 | Blend | 14-1 | 93.3% |
-| **Total** | | **79-39-1** | **66.9%** |
+| **Total** | | **78-39-1** | **66.7%** |
 
 How it got better:
 - **More data each week.** The model isn't retrained during the season, but most inputs are a team's averages from its games so far. In Week 2 that is one game per team; by Week 9 it is seven or eight, so the averages are much more reliable.
 - **Quarterback form (Week 6).** Added each starting QB's recent efficiency, so injuries and backup QBs change the pick.
 - **Blended model (Week 8).** Averaged XGBoost with logistic regression and Elo ratings. On past seasons the blend was more accurate and better calibrated than XGBoost alone. Since the switch it is 25-4 (86%).
 
-Weeks 8 and 9 are only 29 games, so the full-season 66.9% is the fairer number. It matches the 66.8% the blend scored on the 2025 season in testing.
+Weeks 8 and 9 are only 29 games, so the full-season 66.7% is the fairer number. It is right in line with the 66.8% the blend scored on the 2025 season in testing.
 
 ## Files
 
