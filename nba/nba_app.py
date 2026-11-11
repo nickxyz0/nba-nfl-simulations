@@ -1,4 +1,5 @@
-"""Local NBA game simulator interface. Run with nba_app_launcher.py or streamlit run nba_app.py."""
+"""NBA game simulator interface. Run with nba_app_launcher.py, streamlit run nba_app.py, or as the NBA tab of
+the combined site (streamlit run app.py from the repository root)."""
 from pathlib import Path
 import datetime as dt
 import json
@@ -14,7 +15,7 @@ import nba_data
 import nba_game_sim as sim
 
 ROOT = Path(__file__).resolve().parent
-os.chdir(ROOT)
+HOSTED = bool(os.environ.get("SIM_HOSTED"))
 SEASON = nba_data.current_season()
 SIM_CHOICES = [1_000, 5_000, 10_000]
 LOOKAHEAD_DAYS = 4
@@ -32,7 +33,7 @@ st.markdown("""<style>
 .block-container {max-width: 1400px; padding-top: 2.2rem;}
 [data-testid="stMetricValue"] {font-size: 2rem;}
 </style>""", unsafe_allow_html=True)
-st.caption(f"LOCAL SIMULATOR · {nba_data.season_label(SEASON)} REGULAR SEASON")
+st.caption(f"{'' if HOSTED else 'LOCAL '}SIMULATOR · {nba_data.season_label(SEASON)} REGULAR SEASON")
 st.title("NBA Game Simulator")
 st.write("Plays a matchup thousands of times, possession by possession, from real play-by-play: who shoots, "
          "from where, how often it falls, plus fouls, rebounds, rotations and end-of-game logic.")
@@ -98,7 +99,7 @@ with top[0]:
         with st.spinner("Downloading new games and rebuilding events… about a minute"):
             try:
                 refresh_data()
-                st.session_state.pop("simulation", None)
+                st.session_state.pop("nba_simulation", None)
                 st.success("Data refreshed.")
             except Exception as exc:
                 st.error(f"Refresh failed: {exc}")
@@ -192,14 +193,14 @@ if st.button(f"Simulate {n_sims:,} games", type="primary", disabled=not ready):
                                        use_defender=use_defender)
             typical = result.typical_sim()
             samples, info = sim.prop_samples(result)
-            st.session_state.simulation = dict(
+            st.session_state.nba_simulation = dict(
                 key=game_key, result=result, typical=typical, samples=samples, info=info,
                 html=sim.replay_html(result, typical, colors, names, autoplay=True),
                 seconds=time.perf_counter() - started)
         except Exception as exc:
             st.error(f"Simulation failed: {exc}")
 
-S = st.session_state.get("simulation")
+S = st.session_state.get("nba_simulation")
 if not S or S["key"] != game_key:
     st.stop()
 result, samples, info = S["result"], S["samples"], S["info"]
@@ -283,10 +284,10 @@ with check:
 with board_col:
     st.markdown("**Prop board**")
     b1, b2 = st.columns(2)
-    threshold = b1.slider("Minimum hit rate", .50, .90, .60, .01, format="%.2f", key="prop_threshold")
-    sides = b2.multiselect("Sides", ["over", "under"], default=["over"], key="prop_sides")
+    threshold = b1.slider("Minimum hit rate", .50, .90, .60, .01, format="%.2f", key="nba_prop_threshold")
+    sides = b2.multiselect("Sides", ["over", "under"], default=["over"], key="nba_prop_sides")
     stats = st.multiselect("Props", list(sim.PROP_STATS), default=["PTS", "REB", "AST", "3PM", "PRA", "PR", "PA", "RA", "SB"],
-                           format_func=lambda k: sim.PROP_STATS[k][0], key="prop_stats")
+                           format_func=lambda k: sim.PROP_STATS[k][0], key="nba_prop_stats")
     board = sim.prop_board(samples, info, threshold, tuple(sides), stats=stats)
     st.caption(f"For each player (12+ simulated minutes) and prop, the most aggressive half-point line that hits at "
                f"least {threshold:.0%} of simulated games.")
@@ -296,7 +297,7 @@ with board_col:
 
 with st.expander("Data and model details"):
     st.write("Play-by-play: last season from NBA.com (shufinskiy/nba_data on GitHub), this season from ESPN. "
-             "Team colors and logos: ESPN. This is an unofficial local project; nothing here uses betting lines.")
+             "Team colors and logos: ESPN. This is an unofficial personal project; nothing here uses betting lines.")
     st.write("No pregame model is blended in yet; results come from the possession simulation alone. Pace, "
              "scoring and home edge are calibrated to last season's real games.")
     st.write("See model_artifacts/nba_backtest/REPORT.md for the backtest.")

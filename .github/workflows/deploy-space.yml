@@ -1,0 +1,62 @@
+# Copies the repository to the Hugging Face Space on every push to main, so the website updates
+# (for example after a weekly change to nfl/nfl_weekly_config.json).
+# One-time setup: add a repository secret HF_TOKEN (a Hugging Face write token) and a repository
+# variable HF_SPACE (for example "your-hf-username/nba-nfl-simulations").
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-space
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ vars.HF_SPACE != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add the Space settings to the top of the README
+        run: |
+          cat - README.md > space_readme.md <<'YAML'
+          ---
+          title: NBA & NFL Simulators
+          emoji: 🏟️
+          colorFrom: blue
+          colorTo: green
+          sdk: docker
+          app_port: 7860
+          pinned: false
+          ---
+
+          YAML
+          mv space_readme.md README.md
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Upload to the Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE: ${{ vars.HF_SPACE }}
+        run: |
+          pip install --quiet "huggingface_hub>=0.30"
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          api = HfApi(token=os.environ["HF_TOKEN"])
+          repo = os.environ["HF_SPACE"]
+          api.create_repo(repo, repo_type="space", space_sdk="docker", exist_ok=True)
+          api.upload_folder(
+              repo_id=repo, repo_type="space", folder_path=".",
+              commit_message=f"Sync from GitHub {os.environ['GITHUB_SHA'][:7]}",
+              ignore_patterns=[".git/*", ".github/*", "archive/*", "**/*.ipynb", "nfl/experiments/*"],
+              # Remove files deleted on GitHub, but leave the Space's own .gitattributes alone.
+              delete_patterns=["*.py", "*.txt", "*.md", "*.toml", "Dockerfile", ".dockerignore", "nba/**", "nfl/**"],
+          )
+          PY

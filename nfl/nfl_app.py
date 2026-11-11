@@ -1,4 +1,5 @@
-"""Local NFL interface. Run with the notebook launcher or streamlit run."""
+"""NFL interface. Run with the notebook launcher, streamlit run nfl_app.py, or as the NFL tab of the combined
+site (streamlit run app.py from the repository root)."""
 from pathlib import Path
 import json
 import os
@@ -11,7 +12,7 @@ import nfl_model_pipeline as nfl
 import nfl_game_sim as sim
 
 ROOT = Path(__file__).resolve().parent
-os.chdir(ROOT)
+HOSTED = bool(os.environ.get("SIM_HOSTED"))
 CONFIG = json.loads((ROOT / "nfl_weekly_config.json").read_text())
 MODEL = ROOT / CONFIG["model_path"]
 SEASON, WEEK = CONFIG["season"], CONFIG["week"]
@@ -20,7 +21,8 @@ OUT_PLAYERS = CONFIG.get("out_players", {})
 RETURNING_PLAYERS = CONFIG.get("returning_players", {})
 FEATURED_GAME = CONFIG.get("featured_game")
 SIM_MODEL_WEIGHT = .25
-FEATURED_SIMS, STANDARD_SIMS = (20_000, 10_000), (20_000, 2_000)
+# (games, calibration games). The hosted site has slower CPUs and shared users, so it runs fewer.
+FEATURED_SIMS, STANDARD_SIMS = ((5_000, 2_000), (5_000, 2_000)) if HOSTED else ((20_000, 10_000), (20_000, 2_000))
 NAMES = dict(
     ARI="Arizona Cardinals", ATL="Atlanta Falcons", BAL="Baltimore Ravens",
     BUF="Buffalo Bills", CAR="Carolina Panthers", CHI="Chicago Bears",
@@ -40,7 +42,7 @@ st.markdown("""<style>
 .block-container {max-width: 1240px; padding-top: 2.5rem;}
 [data-testid="stMetricValue"] {font-size: 2.2rem;}
 </style>""", unsafe_allow_html=True)
-st.caption("LOCAL MODEL · 2026 REGULAR SEASON")
+st.caption(f"{'' if HOSTED else 'LOCAL '}MODEL · {SEASON} REGULAR SEASON")
 st.title("NFL Matchup Predictor")
 st.write(f"Week {WEEK} · Select a game to run your saved model.")
 
@@ -83,7 +85,7 @@ def save_selected_prediction(prediction, features, kickoff):
 
 if st.button("Refresh schedule and clear preview"):
     week_schedule.clear()
-    st.session_state.pop("preview", None)
+    st.session_state.pop("nfl_preview", None)
 
 if not MODEL.exists():
     st.error("The saved deployment model is missing. Restore the model_artifacts folder before predicting.")
@@ -121,7 +123,7 @@ with home_col:
 
 st.info(f"Uses your saved model and completed Weeks 1–{WEEK - 1} statistics. No retraining. The win pick accounts for starting-QB changes only; the simulation also removes players listed Out in nfl_weekly_config.json and adds back players listed as returning.")
 if st.button("Predict selected game", type="primary"):
-    st.session_state.pop("preview", None)
+    st.session_state.pop("nfl_preview", None)
     try:
         with st.spinner("Refreshing statistics and building pregame inputs…"):
             result, features = nfl.predict_upcoming_week(
@@ -129,14 +131,14 @@ if st.button("Predict selected game", type="primary"):
                 game_id=game_id, return_features=True, qb_overrides=QB_OVERRIDES,
             )
         row = result.iloc[0].to_dict()
-        st.session_state.preview = {
+        st.session_state.nfl_preview = {
             "game_id": game_id, "prediction": row,
             "features": features.loc[game_id].to_dict(), "kickoff": str(game.kickoff),
         }
     except Exception as exc:
         st.error(f"Prediction could not be generated: {exc}")
 
-preview = st.session_state.get("preview")
+preview = st.session_state.get("nfl_preview")
 if preview and preview["game_id"] == game_id:
     prediction = preview["prediction"]
     home_probability = float(prediction["home_win_probability"])
@@ -165,7 +167,9 @@ if preview and preview["game_id"] == game_id:
         st.dataframe(pd.Series(preview["features"], name="Input value").rename_axis("Feature").to_frame(), width="stretch")
         st.caption(f"Season averages use {SEASON} Weeks 1–{WEEK - 1} only. Elo carries historical team strength; QB inputs compare this starter with the team's regular one.")
     destination = ROOT / "prediction_logs" / f"{game_id}.json"
-    if destination.exists():
+    if HOSTED:
+        pass  # saved pregame picks are kept on the laptop, not on the shared site
+    elif destination.exists():
         st.success("A prediction for this game is already saved. It will not be overwritten.")
     elif st.button("Save this prediction before kickoff"):
         try:
@@ -243,11 +247,11 @@ if st.button(f"Simulate {SIM_GAMES:,} games", type="primary"):
     try:
         minutes = max(1, round((1.25 * SIM_GAMES + 11 * SIM_CALIBRATION) / 32_000))
         with st.spinner(f"Simulating {SIM_GAMES:,} games… about {minutes} minute{'s' if minutes > 1 else ''}"):
-            st.session_state.simulation = run_simulation(game_id, game, SIM_GAMES, SIM_CALIBRATION)
+            st.session_state.nfl_simulation = run_simulation(game_id, game, SIM_GAMES, SIM_CALIBRATION)
     except Exception as exc:
         st.error(f"Simulation failed: {exc}")
 
-simulation = st.session_state.get("simulation")
+simulation = st.session_state.get("nfl_simulation")
 if simulation and simulation["game_id"] == game_id:
     home, away = game.home_team, game.away_team
     m1, m2, m3, m4 = st.columns(4)
@@ -308,8 +312,8 @@ if simulation and simulation["game_id"] == game_id:
                    + (f" · push {prop['push']:.1%}" if prop["push"] else ""))
     with board_col:
         st.markdown("**Prop board**")
-        threshold = st.slider("Minimum hit rate", .50, .90, .55, .01, format="%.2f", key="prop_threshold")
-        sides = st.multiselect("Sides", ["over", "under"], default=["over"], key="prop_sides")
+        threshold = st.slider("Minimum hit rate", .50, .90, .55, .01, format="%.2f", key="nfl_prop_threshold")
+        sides = st.multiselect("Sides", ["over", "under"], default=["over"], key="nfl_prop_sides")
         board = sim.prop_board(samples, prop_players, threshold, tuple(sides))
         st.caption("For each player and prop, the most aggressive standard line that hits at least "
                    f"{threshold:.0%} of simulated games.")
@@ -317,7 +321,7 @@ if simulation and simulation["game_id"] == game_id:
                      column_config={"probability": st.column_config.NumberColumn("Hit rate", format="percent")})
 
 with st.expander("Data and model details"):
-    st.write("Team statistics and schedules: nflverse. Logos: ESPN. This is an unofficial local project.")
+    st.write("Team statistics and schedules: nflverse. Logos: ESPN. This is an unofficial personal project.")
     st.write("Predictions refresh current-season stats. The fitted model stays fixed. Past or started games cannot be selected.")
     st.write("Simulations download new play-by-play automatically once a completed game is missing from the saved copy.")
-    st.code(str(MODEL), language=None)
+    st.code(str(MODEL.relative_to(ROOT)) if HOSTED else str(MODEL), language=None)

@@ -97,7 +97,7 @@ def cached_parquet(url, path, refresh=False, columns=None):
     return pd.read_parquet(path, columns=columns)
 
 
-def load_pbp(seasons, cache_dir="data/nflverse", refresh_seasons=()):
+def load_pbp(seasons, cache_dir=nfl.DATA_DIR, refresh_seasons=()):
     frames = [cached_parquet(PBP_URL.format(season=s), Path(cache_dir) / f"play_by_play_{s}.parquet",
                              refresh=s in set(refresh_seasons), columns=PBP_COLUMNS) for s in seasons]
     pbp = pd.concat(frames, ignore_index=True)
@@ -132,7 +132,7 @@ def _cached_table(url, path, refresh=False, usecols=None):
     return pd.read_csv(path, usecols=usecols, low_memory=False)
 
 
-def load_looks(seasons, cache_dir="data/nflverse", refresh_seasons=()):
+def load_looks(seasons, cache_dir=nfl.DATA_DIR, refresh_seasons=()):
     """Per-play defensive look: coverage group, blitz (0/1) and run box (0-2); -1 = unknown."""
     frames = []
     for season in seasons:
@@ -202,7 +202,7 @@ class League:
         self._build_names(pbp, player_stats)
 
     @classmethod
-    def from_cache(cls, season, refresh=False, cache_dir="data/nflverse"):
+    def from_cache(cls, season, refresh=False, cache_dir=nfl.DATA_DIR):
         refresh_seasons = [season] if refresh else ()
         pbp = load_pbp(range(season - 3, season + 1), cache_dir, refresh_seasons)
         looks = load_looks([season - 1, season], cache_dir, refresh_seasons)

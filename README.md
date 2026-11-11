@@ -34,3 +34,19 @@ python3.9 -m venv .venv
 ```
 
 Then follow the README inside `nfl/` or `nba/`. Commands are run from inside that project's folder.
+
+## Website (both simulators in one place)
+
+`app.py` combines the two Streamlit apps into one site with a Home page, an NFL tab and an NBA tab. Run it locally from the repository root:
+
+```bash
+.venv/bin/streamlit run app.py
+```
+
+The same site is hosted on Hugging Face Spaces so friends can use it without running anything. The `Dockerfile` builds it, and `.github/workflows/deploy-space.yml` copies the repository to the Space on every push to `main`, so a weekly edit to `nfl/nfl_weekly_config.json` goes live a few minutes after it is pushed. The hosted copy sets `SIM_HOSTED=1`, which runs 5,000 NFL simulations instead of 20,000 (about ±0.7 points of random noise on a win percentage, against ±0.35 at 20,000) and hides the "Save this prediction" button, since saved picks belong on the laptop.
+
+One-time setup:
+
+1. On huggingface.co, create a free account and a **write** access token (Settings → Access Tokens).
+2. In this GitHub repository, open Settings → Secrets and variables → Actions. Add a secret `HF_TOKEN` with that token, and a variable `HF_SPACE` set to `<your-hf-username>/nba-nfl-simulations`.
+3. Run the "Deploy to Hugging Face Space" workflow from the Actions tab (or push to `main`). It creates the Space if needed. The first build takes about 5 minutes, and the first visit downloads the season's data, which takes a few more.

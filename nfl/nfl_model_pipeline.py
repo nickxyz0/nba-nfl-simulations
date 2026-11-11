@@ -40,6 +40,9 @@ QB_COLUMNS = ["home_qb_rating", "away_qb_rating", "gap_qb_rating", "home_qb_chan
               "away_qb_change", "home_qb_delta", "away_qb_delta", "gap_qb_delta"]
 
 
+DATA_DIR = Path(__file__).resolve().parent / "data" / "nflverse"
+
+
 def cached_csv(url, path, refresh=False):
     """Keep a reproducible local snapshot; refresh is an explicit choice."""
     path = Path(path)
@@ -55,18 +58,18 @@ def cached_csv(url, path, refresh=False):
     return pd.read_csv(path)
 
 
-def load_team_stats(seasons, cache_dir="data/nflverse", refresh=False):
+def load_team_stats(seasons, cache_dir=DATA_DIR, refresh=False):
     return pd.concat([
         cached_csv(TEAM_URL.format(season=s), Path(cache_dir) / f"team_stats_{s}.csv", refresh)
         for s in seasons
     ], ignore_index=True)
 
 
-def load_schedule(cache_dir="data/nflverse", refresh=False):
+def load_schedule(cache_dir=DATA_DIR, refresh=False):
     return cached_csv(SCHEDULE_URL, Path(cache_dir) / "schedule.csv", refresh)
 
 
-def load_player_stats(seasons, cache_dir="data/nflverse", refresh=False):
+def load_player_stats(seasons, cache_dir=DATA_DIR, refresh=False):
     return pd.concat([
         cached_csv(PLAYER_URL.format(season=s), Path(cache_dir) / f"player_stats_{s}.csv", refresh)
         for s in seasons
@@ -668,7 +671,7 @@ def predict_upcoming_week(bundle_path, season, week, refresh=True, log=True,
             result[f"{name}_home_probability"] = components[:, i]
         result["component_disagreement"] = (components >= .5).any(axis=1) & (components < .5).any(axis=1)
     if log:
-        directory = Path("prediction_logs")
+        directory = Path(__file__).resolve().parent / "prediction_logs"
         directory.mkdir(exist_ok=True)
         existing = [game_id for game_id in result.game_id if (directory / f"{game_id}.json").exists()]
         if existing:

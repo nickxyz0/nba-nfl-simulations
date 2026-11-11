@@ -1,0 +1,13 @@
+.git
+.github
+.venv
+**/__pycache__
+**/.ipynb_checkpoints
+**/*.ipynb
+archive
+nba/data
+nfl/data/nflverse
+nfl/experiments
+**/tests
+**/.odds_api_key
+**/.*_app_server.*
