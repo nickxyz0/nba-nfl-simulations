@@ -36,7 +36,7 @@ The blend was the best: 66.8% on 2025, and it is the model used for weekly picks
 `nfl_weekly_config.json` holds the current week and any quarterback changes. The last cells of `NFL Model.ipynb` and the Streamlit app (`nfl_app.py`) both read it.
 
 ### 7. Simulate games
-`nfl_game_sim.py` plays a game one snap at a time, thousands of times. Each snap reuses a real play from nflverse, adjusted for how good that offense and defense are. The most typical simulated game is shown as an animated replay, and the full set of games gives projected box scores and player props.
+`nfl_game_sim.py` plays a game one snap at a time, thousands of times. Each snap reuses a real play from nflverse, adjusted for how good that offense and defense are. The most typical simulated game is shown as an animated replay, and the full set of games gives projected box scores.
 
 ## Files
 

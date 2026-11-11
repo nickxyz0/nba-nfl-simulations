@@ -1,6 +1,6 @@
 # NBA Game Simulator
 
-Simulates an NBA game one possession at a time, thousands of times, to estimate who wins, the final score, and each player's stats.
+Simulates an NBA game one possession at a time, 10,000 times, then replays the most typical of those games.
 
 ## How it works
 
@@ -13,18 +13,14 @@ From the play-by-play, each player gets a shot profile (where he shoots from and
 ### 3. Simulate possessions
 `nba_game_sim.py` plays each possession: who ends it, where the shot comes from, whether it goes in, plus fouls, free throws, assists, blocks and rebounds. Rotations come from recent lineups, and the end of the game handles intentional fouls and overtime.
 
-### 4. Turn simulations into projections
-Running a game thousands of times gives win probability, the score range, and each player's distribution of points, rebounds and assists. The most typical game is shown as an animated replay.
+### 4. Run the game 10,000 times
+Each run plays out differently, so together they show how often each team wins, the range of final scores, and what each player usually puts up.
 
-### 5. Check it against real results
-`nba_backtest.py` re-simulates finished games using only data from before each game. `nba_lines_backtest.py` compares the simulator's player props to real sportsbook lines.
+### 5. Show the most typical game
+Out of all the runs, the simulator picks the one closest to the middle of everything: both final scores, the margin, and each team's top scorers. That game is replayed on a 3D court with a live scoreboard, win probability, box scores and every shot.
 
-What the backtests found:
-- The simulator picked the winner in 65 of 103 games.
-- Its raw prop percentages run high: picks it rated 70–80% hit about 58%.
-- The sportsbook lines were more accurate than the simulator alone, so the prop sheets blend the two.
-
-Full results are in `model_artifacts/*/REPORT.md`.
+### 6. Check it against real results
+`nba_backtest.py` re-simulates finished games using only data from before each game. The simulator picked the winner in 65 of 103 games, and its player point projections were off by about 4.5 points on average. Full results are in `model_artifacts/nba_backtest/REPORT.md`.
 
 ## Files
 
@@ -32,11 +28,10 @@ Full results are in `model_artifacts/*/REPORT.md`.
 |---|---|
 | `nba_data.py` | Downloads and caches the data |
 | `nba_game_sim.py` | Player ratings and the possession simulator |
-| `nba_app.py` | Streamlit app: pick a game, set lineups, simulate |
+| `nba_app.py` | Streamlit app: pick a game, set lineups, simulate and watch the replay |
 | `nba_backtest.py` | Re-simulates past games to measure accuracy |
-| `nba_lines_backtest.py` | Compares simulated props with sportsbook lines |
-| `nba_sheet_page.py` | Builds the nightly prop sheet pages |
-| `output/simulations/` | Example game replay |
+| `nba_game_sim_replay.html` | The animated replay page |
+| `output/simulations/` | Example replay (open in a browser) |
 | `tests/` | Unit tests |
 
 ## Run it
