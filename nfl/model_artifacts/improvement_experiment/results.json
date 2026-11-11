@@ -1,0 +1,590 @@
+{
+  "selection_seasons": [
+    2022,
+    2023,
+    2024
+  ],
+  "selected": "carry_4_reg_0.75/logistic_C0.01",
+  "best_validation_log_loss": "blend_0.000_0.500_0.500",
+  "validation_games": 813,
+  "candidate_count": 55,
+  "configurations": {
+    "deployed_settings": {
+      "candidate": "efficiency_context:7",
+      "feature_set": "efficiency_context",
+      "params": {
+        "subsample": 0.75,
+        "reg_lambda": 40.0,
+        "reg_alpha": 2.0,
+        "n_estimators": 50,
+        "min_child_weight": 5,
+        "max_depth": 1,
+        "learning_rate": 0.04,
+        "gamma": 2.0,
+        "colsample_bytree": 1.0
+      },
+      "history_seasons": 5,
+      "half_life": null
+    },
+    "depth2_trees150": {
+      "candidate": "efficiency_context:7",
+      "feature_set": "efficiency_context",
+      "params": {
+        "max_depth": 2,
+        "min_child_weight": 5,
+        "learning_rate": 0.04,
+        "n_estimators": 150,
+        "reg_lambda": 10.0,
+        "reg_alpha": 0.5,
+        "gamma": 0.25,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9
+      },
+      "history_seasons": 5,
+      "half_life": null
+    },
+    "depth2_trees300": {
+      "candidate": "efficiency_context:7",
+      "feature_set": "efficiency_context",
+      "params": {
+        "max_depth": 2,
+        "min_child_weight": 5,
+        "learning_rate": 0.04,
+        "n_estimators": 300,
+        "reg_lambda": 10.0,
+        "reg_alpha": 0.5,
+        "gamma": 0.25,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9
+      },
+      "history_seasons": 5,
+      "half_life": null
+    },
+    "depth3_trees150": {
+      "candidate": "efficiency_context:7",
+      "feature_set": "efficiency_context",
+      "params": {
+        "max_depth": 3,
+        "min_child_weight": 5,
+        "learning_rate": 0.04,
+        "n_estimators": 150,
+        "reg_lambda": 10.0,
+        "reg_alpha": 0.5,
+        "gamma": 0.25,
+        "subsample": 0.9,
+        "colsample_bytree": 0.9
+      },
+      "history_seasons": 5,
+      "half_life": null
+    },
+    "logistic_C0.01": {
+      "C": 0.01
+    },
+    "logistic_C0.1": {
+      "C": 0.1
+    },
+    "logistic_C1": {
+      "C": 1
+    }
+  },
+  "baseline": "season_reset/deployed_settings",
+  "definitions": {
+    "season_reset/deployed_settings": {
+      "variant": "season_reset",
+      "config": "deployed_settings"
+    },
+    "season_reset/depth2_trees150": {
+      "variant": "season_reset",
+      "config": "depth2_trees150"
+    },
+    "season_reset/depth2_trees300": {
+      "variant": "season_reset",
+      "config": "depth2_trees300"
+    },
+    "season_reset/depth3_trees150": {
+      "variant": "season_reset",
+      "config": "depth3_trees150"
+    },
+    "season_reset/logistic_C0.01": {
+      "variant": "season_reset",
+      "config": "logistic_C0.01"
+    },
+    "season_reset/logistic_C0.1": {
+      "variant": "season_reset",
+      "config": "logistic_C0.1"
+    },
+    "season_reset/logistic_C1": {
+      "variant": "season_reset",
+      "config": "logistic_C1"
+    },
+    "carry_2_reg_0.5/deployed_settings": {
+      "variant": "carry_2_reg_0.5",
+      "config": "deployed_settings"
+    },
+    "carry_2_reg_0.5/depth2_trees150": {
+      "variant": "carry_2_reg_0.5",
+      "config": "depth2_trees150"
+    },
+    "carry_2_reg_0.5/depth2_trees300": {
+      "variant": "carry_2_reg_0.5",
+      "config": "depth2_trees300"
+    },
+    "carry_2_reg_0.5/depth3_trees150": {
+      "variant": "carry_2_reg_0.5",
+      "config": "depth3_trees150"
+    },
+    "carry_2_reg_0.5/logistic_C0.01": {
+      "variant": "carry_2_reg_0.5",
+      "config": "logistic_C0.01"
+    },
+    "carry_2_reg_0.5/logistic_C0.1": {
+      "variant": "carry_2_reg_0.5",
+      "config": "logistic_C0.1"
+    },
+    "carry_2_reg_0.5/logistic_C1": {
+      "variant": "carry_2_reg_0.5",
+      "config": "logistic_C1"
+    },
+    "carry_2_reg_0.75/deployed_settings": {
+      "variant": "carry_2_reg_0.75",
+      "config": "deployed_settings"
+    },
+    "carry_2_reg_0.75/depth2_trees150": {
+      "variant": "carry_2_reg_0.75",
+      "config": "depth2_trees150"
+    },
+    "carry_2_reg_0.75/depth2_trees300": {
+      "variant": "carry_2_reg_0.75",
+      "config": "depth2_trees300"
+    },
+    "carry_2_reg_0.75/depth3_trees150": {
+      "variant": "carry_2_reg_0.75",
+      "config": "depth3_trees150"
+    },
+    "carry_2_reg_0.75/logistic_C0.01": {
+      "variant": "carry_2_reg_0.75",
+      "config": "logistic_C0.01"
+    },
+    "carry_2_reg_0.75/logistic_C0.1": {
+      "variant": "carry_2_reg_0.75",
+      "config": "logistic_C0.1"
+    },
+    "carry_2_reg_0.75/logistic_C1": {
+      "variant": "carry_2_reg_0.75",
+      "config": "logistic_C1"
+    },
+    "carry_4_reg_0.5/deployed_settings": {
+      "variant": "carry_4_reg_0.5",
+      "config": "deployed_settings"
+    },
+    "carry_4_reg_0.5/depth2_trees150": {
+      "variant": "carry_4_reg_0.5",
+      "config": "depth2_trees150"
+    },
+    "carry_4_reg_0.5/depth2_trees300": {
+      "variant": "carry_4_reg_0.5",
+      "config": "depth2_trees300"
+    },
+    "carry_4_reg_0.5/depth3_trees150": {
+      "variant": "carry_4_reg_0.5",
+      "config": "depth3_trees150"
+    },
+    "carry_4_reg_0.5/logistic_C0.01": {
+      "variant": "carry_4_reg_0.5",
+      "config": "logistic_C0.01"
+    },
+    "carry_4_reg_0.5/logistic_C0.1": {
+      "variant": "carry_4_reg_0.5",
+      "config": "logistic_C0.1"
+    },
+    "carry_4_reg_0.5/logistic_C1": {
+      "variant": "carry_4_reg_0.5",
+      "config": "logistic_C1"
+    },
+    "carry_4_reg_0.75/deployed_settings": {
+      "variant": "carry_4_reg_0.75",
+      "config": "deployed_settings"
+    },
+    "carry_4_reg_0.75/depth2_trees150": {
+      "variant": "carry_4_reg_0.75",
+      "config": "depth2_trees150"
+    },
+    "carry_4_reg_0.75/depth2_trees300": {
+      "variant": "carry_4_reg_0.75",
+      "config": "depth2_trees300"
+    },
+    "carry_4_reg_0.75/depth3_trees150": {
+      "variant": "carry_4_reg_0.75",
+      "config": "depth3_trees150"
+    },
+    "carry_4_reg_0.75/logistic_C0.01": {
+      "variant": "carry_4_reg_0.75",
+      "config": "logistic_C0.01"
+    },
+    "carry_4_reg_0.75/logistic_C0.1": {
+      "variant": "carry_4_reg_0.75",
+      "config": "logistic_C0.1"
+    },
+    "carry_4_reg_0.75/logistic_C1": {
+      "variant": "carry_4_reg_0.75",
+      "config": "logistic_C1"
+    },
+    "carry_8_reg_0.5/deployed_settings": {
+      "variant": "carry_8_reg_0.5",
+      "config": "deployed_settings"
+    },
+    "carry_8_reg_0.5/depth2_trees150": {
+      "variant": "carry_8_reg_0.5",
+      "config": "depth2_trees150"
+    },
+    "carry_8_reg_0.5/depth2_trees300": {
+      "variant": "carry_8_reg_0.5",
+      "config": "depth2_trees300"
+    },
+    "carry_8_reg_0.5/depth3_trees150": {
+      "variant": "carry_8_reg_0.5",
+      "config": "depth3_trees150"
+    },
+    "carry_8_reg_0.5/logistic_C0.01": {
+      "variant": "carry_8_reg_0.5",
+      "config": "logistic_C0.01"
+    },
+    "carry_8_reg_0.5/logistic_C0.1": {
+      "variant": "carry_8_reg_0.5",
+      "config": "logistic_C0.1"
+    },
+    "carry_8_reg_0.5/logistic_C1": {
+      "variant": "carry_8_reg_0.5",
+      "config": "logistic_C1"
+    },
+    "carry_8_reg_0.75/deployed_settings": {
+      "variant": "carry_8_reg_0.75",
+      "config": "deployed_settings"
+    },
+    "carry_8_reg_0.75/depth2_trees150": {
+      "variant": "carry_8_reg_0.75",
+      "config": "depth2_trees150"
+    },
+    "carry_8_reg_0.75/depth2_trees300": {
+      "variant": "carry_8_reg_0.75",
+      "config": "depth2_trees300"
+    },
+    "carry_8_reg_0.75/depth3_trees150": {
+      "variant": "carry_8_reg_0.75",
+      "config": "depth3_trees150"
+    },
+    "carry_8_reg_0.75/logistic_C0.01": {
+      "variant": "carry_8_reg_0.75",
+      "config": "logistic_C0.01"
+    },
+    "carry_8_reg_0.75/logistic_C0.1": {
+      "variant": "carry_8_reg_0.75",
+      "config": "logistic_C0.1"
+    },
+    "carry_8_reg_0.75/logistic_C1": {
+      "variant": "carry_8_reg_0.75",
+      "config": "logistic_C1"
+    },
+    "elo": {
+      "elo": true
+    },
+    "blend_0.500_0.500_0.000": {
+      "components": [
+        "season_reset/deployed_settings",
+        "carry_4_reg_0.75/logistic_C0.01",
+        "elo"
+      ],
+      "weights": [
+        0.5,
+        0.5,
+        0
+      ]
+    },
+    "blend_0.500_0.000_0.500": {
+      "components": [
+        "season_reset/deployed_settings",
+        "carry_4_reg_0.75/logistic_C0.01",
+        "elo"
+      ],
+      "weights": [
+        0.5,
+        0,
+        0.5
+      ]
+    },
+    "blend_0.000_0.500_0.500": {
+      "components": [
+        "season_reset/deployed_settings",
+        "carry_4_reg_0.75/logistic_C0.01",
+        "elo"
+      ],
+      "weights": [
+        0,
+        0.5,
+        0.5
+      ]
+    },
+    "blend_0.333_0.333_0.333": {
+      "components": [
+        "season_reset/deployed_settings",
+        "carry_4_reg_0.75/logistic_C0.01",
+        "elo"
+      ],
+      "weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    "blend_0.600_0.200_0.200": {
+      "components": [
+        "season_reset/deployed_settings",
+        "carry_4_reg_0.75/logistic_C0.01",
+        "elo"
+      ],
+      "weights": [
+        0.6,
+        0.2,
+        0.2
+      ]
+    }
+  },
+  "tests": [
+    {
+      "season": 2025,
+      "name": "season_reset/deployed_settings",
+      "games": 271,
+      "correct": 169,
+      "accuracy": 0.6236162361623616,
+      "log_loss": 0.6470596975828999,
+      "brier": 0.22753043418975866,
+      "roc_auc": 0.6796438356164383,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0
+      },
+      "weeks_1_to_4": {
+        "games": 63,
+        "correct": 43,
+        "accuracy": 0.6825396825396826,
+        "log_loss": 0.620571351586442,
+        "brier": 0.214574629659923,
+        "roc_auc": 0.7692307692307693
+      }
+    },
+    {
+      "season": 2025,
+      "name": "carry_4_reg_0.75/logistic_C0.01",
+      "games": 271,
+      "correct": 177,
+      "accuracy": 0.6531365313653137,
+      "log_loss": 0.6427292310875146,
+      "brier": 0.22645094338807772,
+      "roc_auc": 0.6723287671232877,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.02952029520295203,
+        "lower_95": -0.007068395307018095,
+        "upper_95": 0.07142857142857142
+      },
+      "weeks_1_to_4": {
+        "games": 63,
+        "correct": 43,
+        "accuracy": 0.6825396825396826,
+        "log_loss": 0.5845748591634298,
+        "brier": 0.1996504533496414,
+        "roc_auc": 0.7660256410256411
+      }
+    },
+    {
+      "season": 2025,
+      "name": "elo",
+      "games": 271,
+      "correct": 173,
+      "accuracy": 0.6383763837638377,
+      "log_loss": 0.6436424113636411,
+      "brier": 0.22626367514141305,
+      "roc_auc": 0.6812054794520548,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.014760147601476014,
+        "lower_95": -0.025925925925925925,
+        "upper_95": 0.05660377358490566
+      },
+      "weeks_1_to_4": {
+        "games": 63,
+        "correct": 42,
+        "accuracy": 0.6666666666666666,
+        "log_loss": 0.5855636825075935,
+        "brier": 0.20073793237112705,
+        "roc_auc": 0.7403846153846154
+      }
+    },
+    {
+      "season": 2025,
+      "name": "blend_0.000_0.500_0.500",
+      "games": 271,
+      "correct": 172,
+      "accuracy": 0.6346863468634686,
+      "log_loss": 0.6374444687405859,
+      "brier": 0.22400923746155776,
+      "roc_auc": 0.6801643835616439,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.01107011070110701,
+        "lower_95": -0.030080884028252444,
+        "upper_95": 0.05243938497930221
+      },
+      "weeks_1_to_4": {
+        "games": 63,
+        "correct": 43,
+        "accuracy": 0.6825396825396826,
+        "log_loss": 0.579017269051191,
+        "brier": 0.1975946095681756,
+        "roc_auc": 0.7606837606837606
+      }
+    },
+    {
+      "season": 2025,
+      "name": "blend_0.333_0.333_0.333",
+      "games": 271,
+      "correct": 174,
+      "accuracy": 0.6420664206642066,
+      "log_loss": 0.6368403334659474,
+      "brier": 0.22335052122860272,
+      "roc_auc": 0.683068493150685,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.01845018450184502,
+        "lower_95": -0.01098901098901099,
+        "upper_95": 0.04797047970479705
+      },
+      "weeks_1_to_4": {
+        "games": 63,
+        "correct": 44,
+        "accuracy": 0.6984126984126984,
+        "log_loss": 0.5898896858011627,
+        "brier": 0.2013558509919178,
+        "roc_auc": 0.7628205128205128
+      }
+    },
+    {
+      "season": 2026,
+      "name": "season_reset/deployed_settings",
+      "games": 62,
+      "correct": 40,
+      "accuracy": 0.6451612903225806,
+      "log_loss": 0.6570728403144929,
+      "brier": 0.2322879494146402,
+      "roc_auc": 0.653968253968254,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0
+      },
+      "weeks_1_to_4": {
+        "games": 62,
+        "correct": 40,
+        "accuracy": 0.6451612903225806,
+        "log_loss": 0.6570728403144929,
+        "brier": 0.2322879494146402,
+        "roc_auc": 0.653968253968254
+      }
+    },
+    {
+      "season": 2026,
+      "name": "carry_4_reg_0.75/logistic_C0.01",
+      "games": 62,
+      "correct": 36,
+      "accuracy": 0.5806451612903226,
+      "log_loss": 0.6533924716328369,
+      "brier": 0.23219247786042693,
+      "roc_auc": 0.6359788359788361,
+      "difference_vs_baseline": {
+        "accuracy_difference": -0.06451612903225806,
+        "lower_95": -0.1935483870967742,
+        "upper_95": 0.06666666666666667
+      },
+      "weeks_1_to_4": {
+        "games": 62,
+        "correct": 36,
+        "accuracy": 0.5806451612903226,
+        "log_loss": 0.6533924716328369,
+        "brier": 0.23219247786042693,
+        "roc_auc": 0.6359788359788361
+      }
+    },
+    {
+      "season": 2026,
+      "name": "elo",
+      "games": 62,
+      "correct": 42,
+      "accuracy": 0.6774193548387096,
+      "log_loss": 0.6410199916782409,
+      "brier": 0.2257427593760449,
+      "roc_auc": 0.6793650793650793,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.03225806451612903,
+        "lower_95": -0.06666666666666667,
+        "upper_95": 0.125
+      },
+      "weeks_1_to_4": {
+        "games": 62,
+        "correct": 42,
+        "accuracy": 0.6774193548387096,
+        "log_loss": 0.6410199916782409,
+        "brier": 0.2257427593760449,
+        "roc_auc": 0.6793650793650793
+      }
+    },
+    {
+      "season": 2026,
+      "name": "blend_0.000_0.500_0.500",
+      "games": 62,
+      "correct": 38,
+      "accuracy": 0.6129032258064516,
+      "log_loss": 0.6382414714443567,
+      "brier": 0.22523259374458518,
+      "roc_auc": 0.6582010582010582,
+      "difference_vs_baseline": {
+        "accuracy_difference": -0.03225806451612903,
+        "lower_95": -0.171875,
+        "upper_95": 0.0625
+      },
+      "weeks_1_to_4": {
+        "games": 62,
+        "correct": 38,
+        "accuracy": 0.6129032258064516,
+        "log_loss": 0.6382414714443567,
+        "brier": 0.22523259374458518,
+        "roc_auc": 0.6582010582010582
+      }
+    },
+    {
+      "season": 2026,
+      "name": "blend_0.333_0.333_0.333",
+      "games": 62,
+      "correct": 40,
+      "accuracy": 0.6451612903225806,
+      "log_loss": 0.6423183704793202,
+      "brier": 0.22620684911424022,
+      "roc_auc": 0.6592592592592592,
+      "difference_vs_baseline": {
+        "accuracy_difference": 0.0,
+        "lower_95": -0.078125,
+        "upper_95": 0.0625
+      },
+      "weeks_1_to_4": {
+        "games": 62,
+        "correct": 40,
+        "accuracy": 0.6451612903225806,
+        "log_loss": 0.6423183704793202,
+        "brier": 0.22620684911424022,
+        "roc_auc": 0.6592592592592592
+      }
+    }
+  ],
+  "limitations": [
+    "2025 benchmark was previously inspected.",
+    "2026 uses cached available completed games; no refresh.",
+    "No injury/QB experiment in this run.",
+    "Deployment unchanged; statistical carryover is experimental."
+  ]
+}

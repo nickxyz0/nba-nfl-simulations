@@ -1,0 +1,47 @@
+[
+  {
+    "model":"Original XGBoost (2023-2024 training)",
+    "games":271,
+    "correct":160,
+    "accuracy":0.5904059041,
+    "log_loss":0.7078302148,
+    "brier":0.2528894412,
+    "roc_auc":0.6217808219
+  },
+  {
+    "model":"Tuned XGBoost (three-seed average)",
+    "games":271,
+    "correct":169,
+    "accuracy":0.6236162362,
+    "log_loss":0.6470596976,
+    "brier":0.2275304342,
+    "roc_auc":0.6796438356
+  },
+  {
+    "model":"Regularized logistic regression",
+    "games":271,
+    "correct":173,
+    "accuracy":0.6383763838,
+    "log_loss":0.6356965169,
+    "brier":0.2234756591,
+    "roc_auc":0.6833972603
+  },
+  {
+    "model":"Pregame Elo baseline",
+    "games":271,
+    "correct":173,
+    "accuracy":0.6383763838,
+    "log_loss":0.6436424114,
+    "brier":0.2262636751,
+    "roc_auc":0.6812054795
+  },
+  {
+    "model":"Historical home-win probability",
+    "games":271,
+    "correct":146,
+    "accuracy":0.5387453875,
+    "log_loss":0.6902028154,
+    "brier":0.248529173,
+    "roc_auc":0.5
+  }
+]

@@ -1,0 +1,24 @@
+# environment and local tooling
+.venv/
+.claude/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+
+# secrets
+**/.odds_api_key
+
+# downloaded data (re-created by the loaders)
+nfl/data/nflverse/
+nba/data/
+
+# app server state and logs
+**/.*_app_server.json
+**/.*_app_server.log
+
+# personal files, old backups and coursework
+archive/
+
+# nightly betting prop sheets (kept locally)
+nba/output/cheat_sheets/
+nfl/output/cheat_sheets/

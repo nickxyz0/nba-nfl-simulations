@@ -1,0 +1,15 @@
+game,home_win,home_scores_first,out_home,out_away,seconds
+PHI @ DET,0.6262,0.5195,Isaiah Joe; Jalen Duren,e4870562; e4871141,23
+ATL @ WAS,0.2287,0.4806,Reece Beekman; e4997537,Jock Landale; e4712863; e5105571,23
+MIL @ BOS,0.8035,0.5347,Jayson Tatum; e4433188,,22
+CHA @ BKN,0.3885,0.5005,Egor Demin; e5105626,e4066218,22
+CHI @ NYK,0.7471,0.5429,Josh Hart,e4278067,23
+IND @ MEM,0.6933,0.524,Scotty Pippen Jr.,Ivica Zubac; Obi Toppin; e2530530; e5157066,23
+UTA @ NOP,0.5729,0.5195,Jordan Poole; Yves Missi,Jaren Jackson Jr.; e3102530; e4433268,23
+CLE @ OKC,0.586,0.5191,Cason Wallace; Chet Holmgren; e5061603; e5159925,Jaylon Tyson; Peyton Watson,23
+MIN @ HOU,0.4744,0.5113,Clint Capela; Steven Adams,Anthony Edwards; Terrence Shannon Jr.; e3934673,23
+TOR @ DEN,0.46,0.4924,e4432181; e4592427,Kawhi Leonard; e4432586,23
+POR @ PHX,0.5458,0.5226,e4701232,Ja Morant; e4914336,23
+DAL @ SAS,0.8021,0.523,e5101845; e6440,Max Christie; Sergio de Larrea; e4593125; e4683688; e5148538,23
+LAL @ SAC,0.29,0.4993,Keegan Murray; e3907387; e4898371,e5060631,23
+MIA @ LAC,0.2948,0.4708,e3913176; e4396818; e5108024; e6580,,23

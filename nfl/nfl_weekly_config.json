@@ -1,0 +1,62 @@
+{
+  "season": 2026,
+  "week": 9,
+  "model_path": "model_artifacts/nfl_ensemble_b4cdeece7da5.joblib",
+  "qb_overrides": {
+    "MIN": "Carson Wentz"
+  },
+  "featured_game": "2026_09_JAX_BAL",
+  "out_players": {
+    "BAL": [
+      "Lamar Jackson",
+      "Tyler Huntley"
+    ],
+    "WAS": [
+      "Terry McLaurin",
+      "Jeremy McNichols"
+    ],
+    "DET": [
+      "Jimmy Rolder"
+    ],
+    "HOU": [
+      "Jaylin Noel"
+    ],
+    "PHI": [
+      "Dameon Pierce"
+    ],
+    "NYG": [
+      "Tyrone Tracy Jr."
+    ],
+    "MIN": [
+      "Kyler Murray"
+    ],
+    "SEA": [
+      "Sam Darnold"
+    ],
+    "ARI": [
+      "Jeremiyah Love",
+      "Kendrick Bourne",
+      "Jalen Brooks",
+      "Jacoby Brissett"
+    ],
+    "CHI": [
+      "Cole Kmet"
+    ],
+    "IND": [
+      "Cam Taylor-Britt"
+    ],
+    "TB": [
+      "Yaya Diaby"
+    ],
+    "DEN": [
+      "RJ Harvey"
+    ],
+    "CIN": [
+      "Cashius Howell"
+    ],
+    "LAR": [
+      "Jaylen Watson"
+    ]
+  },
+  "returning_players": {}
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "season":2023,
+    "candidate":"efficiency_turnovers:0",
+    "games":272,
+    "correct":160,
+    "accuracy":0.5882352941,
+    "log_loss":0.6693704172,
+    "brier":0.2381109708,
+    "roc_auc":0.6408516228,
+    "always_home_accuracy":0.5551470588,
+    "elo_accuracy":0.6066176471
+  },
+  {
+    "season":2024,
+    "candidate":"efficiency_context:7",
+    "games":272,
+    "correct":189,
+    "accuracy":0.6948529412,
+    "log_loss":0.629898337,
+    "brier":0.2190488484,
+    "roc_auc":0.7358131958,
+    "always_home_accuracy":0.5330882353,
+    "elo_accuracy":0.6507352941
+  }
+]

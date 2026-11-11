@@ -1,0 +1,390 @@
+{
+  "validation_seasons": [
+    2022,
+    2023,
+    2024
+  ],
+  "validation_games": 813,
+  "validation_qb_change_games": 353,
+  "elo_qb_points": 400,
+  "qb_settings": {
+    "prior_epa_per_play": -0.05,
+    "prior_plays": 200.0,
+    "half_life_games": 16.0,
+    "regular_window": 8
+  },
+  "logistic_C": {
+    "lr_base": 0.01,
+    "lr_qb": 0.01
+  },
+  "tests": [
+    {
+      "season": 2025,
+      "name": "xgb_base",
+      "games": 271,
+      "correct": 169,
+      "accuracy": 0.6236162361623616,
+      "log_loss": 0.6470596975828999,
+      "brier": 0.22753043418975866,
+      "roc_auc": 0.6796438356164383,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 83,
+        "accuracy": 0.664,
+        "log_loss": 0.6376961269459509,
+        "brier": 0.22296751977781915,
+        "roc_auc": 0.6992307692307693
+      }
+    },
+    {
+      "season": 2025,
+      "name": "lr_base",
+      "games": 271,
+      "correct": 169,
+      "accuracy": 0.6236162361623616,
+      "log_loss": 0.6362780211044402,
+      "brier": 0.2237364855996131,
+      "roc_auc": 0.6795068493150684,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.0,
+        "lower_95": -0.04316546762589928,
+        "upper_95": 0.04797047970479705
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 81,
+        "accuracy": 0.648,
+        "log_loss": 0.6269471456580328,
+        "brier": 0.21935280041348534,
+        "roc_auc": 0.7033333333333333
+      }
+    },
+    {
+      "season": 2025,
+      "name": "xgb_qb",
+      "games": 271,
+      "correct": 174,
+      "accuracy": 0.6420664206642066,
+      "log_loss": 0.6443951347133338,
+      "brier": 0.2262565560337676,
+      "roc_auc": 0.6806301369863014,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.01845018450184502,
+        "lower_95": -0.017987234760927718,
+        "upper_95": 0.05263157894736842
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 85,
+        "accuracy": 0.68,
+        "log_loss": 0.623418339862864,
+        "brier": 0.21617339182576698,
+        "roc_auc": 0.7348717948717949
+      }
+    },
+    {
+      "season": 2025,
+      "name": "lr_qb",
+      "games": 271,
+      "correct": 175,
+      "accuracy": 0.6457564575645757,
+      "log_loss": 0.6308445170646475,
+      "brier": 0.220365489851765,
+      "roc_auc": 0.6955616438356165,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.02214022140221402,
+        "lower_95": -0.021897810218978103,
+        "upper_95": 0.06792452830188679
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 83,
+        "accuracy": 0.664,
+        "log_loss": 0.5983844018073939,
+        "brier": 0.20540945404174513,
+        "roc_auc": 0.7420512820512821
+      }
+    },
+    {
+      "season": 2025,
+      "name": "elo_base",
+      "games": 271,
+      "correct": 173,
+      "accuracy": 0.6383763837638377,
+      "log_loss": 0.6436424113636411,
+      "brier": 0.22626367514141305,
+      "roc_auc": 0.6812054794520548,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.014760147601476014,
+        "lower_95": -0.025925925925925925,
+        "upper_95": 0.05660377358490566
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 78,
+        "accuracy": 0.624,
+        "log_loss": 0.6368117518368489,
+        "brier": 0.22285460927225087,
+        "roc_auc": 0.7017948717948719
+      }
+    },
+    {
+      "season": 2025,
+      "name": "elo_qb",
+      "games": 271,
+      "correct": 180,
+      "accuracy": 0.6642066420664207,
+      "log_loss": 0.6350788183742655,
+      "brier": 0.22248004722632375,
+      "roc_auc": 0.6912876712328767,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.04059040590405904,
+        "lower_95": -0.011112143742255266,
+        "upper_95": 0.09259259259259259
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 85,
+        "accuracy": 0.68,
+        "log_loss": 0.6182458822358825,
+        "brier": 0.2146517039523373,
+        "roc_auc": 0.7233333333333334
+      }
+    },
+    {
+      "season": 2025,
+      "name": "blend_base",
+      "games": 271,
+      "correct": 175,
+      "accuracy": 0.6457564575645757,
+      "log_loss": 0.6351708167931921,
+      "brier": 0.22254093957298177,
+      "roc_auc": 0.6885479452054795,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.02214022140221402,
+        "lower_95": -0.01103042923811591,
+        "upper_95": 0.057034220532319393
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 80,
+        "accuracy": 0.64,
+        "log_loss": 0.6257282705512078,
+        "brier": 0.21806956272996156,
+        "roc_auc": 0.7102564102564103
+      }
+    },
+    {
+      "season": 2025,
+      "name": "blend_qb",
+      "games": 271,
+      "correct": 182,
+      "accuracy": 0.6715867158671587,
+      "log_loss": 0.6285795484445224,
+      "brier": 0.2193760530002024,
+      "roc_auc": 0.6984657534246574,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.04797047970479705,
+        "lower_95": 0.007326007326007326,
+        "upper_95": 0.09701492537313433
+      },
+      "qb_change_games": {
+        "games": 125,
+        "correct": 88,
+        "accuracy": 0.704,
+        "log_loss": 0.6033091505347246,
+        "brier": 0.20769547882519607,
+        "roc_auc": 0.7425641025641025
+      }
+    },
+    {
+      "season": 2026,
+      "name": "xgb_base",
+      "games": 78,
+      "correct": 49,
+      "accuracy": 0.6282051282051282,
+      "log_loss": 0.6603187601472822,
+      "brier": 0.2338346112008964,
+      "roc_auc": 0.6572181938035596,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 21,
+        "accuracy": 0.5675675675675675,
+        "log_loss": 0.6760388777995043,
+        "brier": 0.2414444846667975,
+        "roc_auc": 0.6081871345029239
+      }
+    },
+    {
+      "season": 2026,
+      "name": "lr_base",
+      "games": 78,
+      "correct": 48,
+      "accuracy": 0.6153846153846154,
+      "log_loss": 0.6717899284532007,
+      "brier": 0.2381058396288468,
+      "roc_auc": 0.6341463414634146,
+      "vs_xgb_base": {
+        "accuracy_difference": -0.01282051282051282,
+        "lower_95": -0.0875,
+        "upper_95": 0.08108108108108109
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 20,
+        "accuracy": 0.5405405405405406,
+        "log_loss": 0.6994168436055943,
+        "brier": 0.2538587284717003,
+        "roc_auc": 0.5497076023391814
+      }
+    },
+    {
+      "season": 2026,
+      "name": "xgb_qb",
+      "games": 78,
+      "correct": 49,
+      "accuracy": 0.6282051282051282,
+      "log_loss": 0.6474205855207337,
+      "brier": 0.22756607776785492,
+      "roc_auc": 0.6858932102834541,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.0,
+        "lower_95": -0.10256410256410256,
+        "upper_95": 0.07905701754386005
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 23,
+        "accuracy": 0.6216216216216216,
+        "log_loss": 0.6627676058268097,
+        "brier": 0.23507973213503303,
+        "roc_auc": 0.6140350877192982
+      }
+    },
+    {
+      "season": 2026,
+      "name": "lr_qb",
+      "games": 78,
+      "correct": 49,
+      "accuracy": 0.6282051282051282,
+      "log_loss": 0.6706381176997591,
+      "brier": 0.2386042325107165,
+      "roc_auc": 0.6328279499011206,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.0,
+        "lower_95": -0.0875,
+        "upper_95": 0.0945945945945946
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 20,
+        "accuracy": 0.5405405405405406,
+        "log_loss": 0.7219022474352145,
+        "brier": 0.2632480785272318,
+        "roc_auc": 0.5380116959064327
+      }
+    },
+    {
+      "season": 2026,
+      "name": "elo_base",
+      "games": 78,
+      "correct": 51,
+      "accuracy": 0.6538461538461539,
+      "log_loss": 0.6362344208356597,
+      "brier": 0.2235849105763085,
+      "roc_auc": 0.6961107448912327,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.02564102564102564,
+        "lower_95": -0.05128205128205128,
+        "upper_95": 0.10256410256410256
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 24,
+        "accuracy": 0.6486486486486487,
+        "log_loss": 0.6359309758115491,
+        "brier": 0.22390374739684687,
+        "roc_auc": 0.7105263157894737
+      }
+    },
+    {
+      "season": 2026,
+      "name": "elo_qb",
+      "games": 78,
+      "correct": 52,
+      "accuracy": 0.6666666666666666,
+      "log_loss": 0.6325641571843305,
+      "brier": 0.22161096022644677,
+      "roc_auc": 0.6954515491100858,
+      "vs_xgb_base": {
+        "accuracy_difference": 0.038461538461538464,
+        "lower_95": -0.02631578947368421,
+        "upper_95": 0.11538461538461539
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 25,
+        "accuracy": 0.6756756756756757,
+        "log_loss": 0.6281936632492876,
+        "brier": 0.21974244665930065,
+        "roc_auc": 0.7280701754385965
+      }
+    },
+    {
+      "season": 2026,
+      "name": "blend_base",
+      "games": 78,
+      "correct": 48,
+      "accuracy": 0.6153846153846154,
+      "log_loss": 0.6431150679583862,
+      "brier": 0.22628069910764326,
+      "roc_auc": 0.6736980883322348,
+      "vs_xgb_base": {
+        "accuracy_difference": -0.01282051282051282,
+        "lower_95": -0.0875,
+        "upper_95": 0.07692307692307693
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 23,
+        "accuracy": 0.6216216216216216,
+        "log_loss": 0.6581157493331229,
+        "brier": 0.2335356642241387,
+        "roc_auc": 0.6403508771929824
+      }
+    },
+    {
+      "season": 2026,
+      "name": "blend_qb",
+      "games": 78,
+      "correct": 48,
+      "accuracy": 0.6153846153846154,
+      "log_loss": 0.6391558927450558,
+      "brier": 0.22420383381300993,
+      "roc_auc": 0.6802900461437047,
+      "vs_xgb_base": {
+        "accuracy_difference": -0.01282051282051282,
+        "lower_95": -0.07692307692307693,
+        "upper_95": 0.05263157894736842
+      },
+      "qb_change_games": {
+        "games": 37,
+        "correct": 22,
+        "accuracy": 0.5945945945945946,
+        "log_loss": 0.6585585056305931,
+        "brier": 0.23350873054113194,
+        "roc_auc": 0.6374269005847952
+      }
+    }
+  ]
+}

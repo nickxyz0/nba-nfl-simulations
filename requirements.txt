@@ -1,0 +1,12 @@
+# Python 3.9
+numpy==1.26.4
+pandas==1.5.3
+scikit-learn==1.6.1
+xgboost==2.1.4
+joblib==1.5.3
+pyarrow==21.0.0
+requests==2.32.5
+nba_api==1.10.2
+matplotlib==3.9.4
+streamlit==1.50.0
+ipykernel==6.31.0
