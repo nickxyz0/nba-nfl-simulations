@@ -1,9 +1,9 @@
-# Sports ML Models and Game Simulators
+# NFL and NBA ML Models and Game Simulators
 
 Two sports analytics projects built in Python:
 
-- **[NFL](nfl/)**: a machine learning model that predicts the winner of every NFL game, plus a snap-by-snap game simulator.
-- **[NBA](nba/)**: a possession-by-possession game simulator that projects scores, player stats and props.
+- **[NFL](nfl/)**: XGBoost machine learning model that predicts the winner of every NFL game, plus a play-by-play game simulator, running 20,000 simulations of a game to find the most typical game based on the simulation closest to the mean of the 20,0000possibilities.
+- **[NBA](nba/)**: a play-by-play game simulator that simulates daily games 10,000 times and displays the most typical game closest to the mean of the 10,000 simulations. 
 
 Each project has its own README that walks through how it works, step by step.
 
